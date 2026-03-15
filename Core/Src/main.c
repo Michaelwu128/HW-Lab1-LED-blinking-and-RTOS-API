@@ -550,14 +550,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if (GPIO_Pin == BUTTON_EXTI13_Pin) {
 
-    // 【關鍵修正】：你的板子按下去是低電位 (RESET)
     if (HAL_GPIO_ReadPin(GPIOC, BUTTON_EXTI13_Pin) == GPIO_PIN_RESET) {
       // 偵測到按下去，記錄時間
       button_press_time = HAL_GetTick();
     }
     else {
       // 偵測到放開 (變成 SET)
-      // 【防護機制】：確保真的有按下去的紀錄，才去計算時間差
+      // 防護機制：確保真的有按下去的紀錄，才去計算時間差
       if (button_press_time != 0) {
           uint32_t duration = HAL_GetTick() - button_press_time;
 
